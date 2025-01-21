@@ -43,10 +43,13 @@
 */
 uint64_t Tools::buildLong(uint8_t bytes[LONGSIZE])
 {
-  
-  
-  
-  return 0;
+  uint64_t long_num = 0x0000000000000000;
+  for (int i = LONGSIZE - 1; i > -1; i--)
+  {
+    long_num = long_num << 8;
+    long_num = long_num | bytes[i];
+  }
+  return long_num;
 }
 
 /** 
@@ -143,6 +146,11 @@ uint64_t Tools::getBits(uint64_t source, int32_t low, int32_t high)
  */
 uint64_t Tools::setBits(uint64_t source, int32_t low, int32_t high)
 {
+  if (low < 0 || high > 63)
+  {
+    return 0;
+  }
+  
   return 0;
 }
 
