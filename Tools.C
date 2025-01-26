@@ -117,7 +117,7 @@ uint64_t Tools::getBits(uint64_t source, int32_t low, int32_t high)
     return 0;
   }
   source = source << (63 - high);
-  source = source >> low + (63 - high);
+  source = source >> (low + (63 - high));
   return source;
 }
 
@@ -152,7 +152,7 @@ uint64_t Tools::setBits(uint64_t source, int32_t low, int32_t high)
   }
   uint64_t mask = ~0;
   mask = mask << (63-high);
-  mask = mask >> low + (63-high);
+  mask = mask >> (low + (63-high));
   mask = mask << low;
   return mask | source;
 }
@@ -329,10 +329,13 @@ bool Tools::subOverflow(uint64_t op1, uint64_t op2)
   //NOTE: the subtraction is op2 - op1 (not op1 - op2).
   
   // Subtracting op1 is the same as adding -op1.
-  uint64_t negatedOp1 = ~op1 + 1;
+
+  // Overflow occurs when:
+  // op2 is positive, op1 is negative, and result is negative
+  // op2 is negative, op1 is positive, and result is positive
   int signOne = sign(op1);
   int signTwo = sign(op2);
-  int returnSign = sign(op2 - negatedOp1);
+  int returnSign = sign(op2 - op1);
 
   return (signOne != signTwo) && (returnSign != signTwo);
 }
