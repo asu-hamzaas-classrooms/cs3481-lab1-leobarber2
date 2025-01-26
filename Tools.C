@@ -285,7 +285,11 @@ bool Tools::addOverflow(uint64_t op1, uint64_t op2)
   //      Thus, the way to check for an overflow is to compare the signs of the
   //      operand and the result.  For example, if you add two positive numbers, 
   //      the result should be positive, otherwise an overflow occurred.
-  return false;
+  int signOne = sign(op1);
+  int signTwo = sign(op2);
+  int returnSign = sign(op1 + op2);
+
+  return (signOne == signTwo) && (returnSign != signOne);
 }
 
 /**
