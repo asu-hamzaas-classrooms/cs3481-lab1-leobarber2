@@ -116,9 +116,10 @@ uint64_t Tools::getBits(uint64_t source, int32_t low, int32_t high)
   {
     return 0;
   }
-  source = source << (63 - high);
-  source = source >> (low + (63 - high));
-  return source;
+  uint64_t newNum = source;
+  newNum = newNum << (63 - high);
+  newNum = newNum >> (low + (63 - high));
+  return newNum;
 }
 
 
