@@ -179,7 +179,16 @@ uint64_t Tools::setBits(uint64_t source, int32_t low, int32_t high)
  */
 uint64_t Tools::clearBits(uint64_t source, int32_t low, int32_t high)
 {
-  return 0;
+  if (low < 0 || low > 63 || low > high || high < 0 || high > 63)
+  {
+    return source;
+  }
+  uint64_t mask = ~0;
+  mask = mask << (63-high);
+  mask = mask >> (low + (63-high));
+  mask = mask << low;
+  mask = ~mask;
+  return mask & source;
 }
 
 
@@ -210,11 +219,13 @@ uint64_t Tools::clearBits(uint64_t source, int32_t low, int32_t high)
 uint64_t Tools::copyBits(uint64_t source, uint64_t dest, 
                          int32_t srclow, int32_t dstlow, int32_t length)
 {
-  int32_t high1 = srclow + length;
-  int32_t high2 = srclow + length;
-   
-   
-   return 0; 
+  int32_t srchigh = srclow + length - 1;
+  int32_t dsthigh = dstlow + length - 1;
+  if (srclow < 0 || dstlow < 0 || srchigh > 63 || dsthigh > 63)
+  {
+    return dest;
+  }
+  
 }
 
 
