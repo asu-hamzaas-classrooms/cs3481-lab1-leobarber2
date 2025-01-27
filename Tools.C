@@ -46,6 +46,7 @@ uint64_t Tools::buildLong(uint8_t bytes[LONGSIZE])
   uint64_t long_num = 0x0000000000000000;
   for (int i = LONGSIZE - 1; i > -1; i--)
   {
+    // The first shift will not do anything.
     long_num = long_num << 8;
     long_num = long_num | bytes[i];
   }
@@ -117,7 +118,9 @@ uint64_t Tools::getBits(uint64_t source, int32_t low, int32_t high)
     return 0;
   }
   uint64_t newNum = source;
+  // Shift out the higher order bits.
   newNum = newNum << (63 - high);
+  // Shift out the lower order bits.
   newNum = newNum >> (low + (63 - high));
   return newNum;
 }
@@ -151,10 +154,15 @@ uint64_t Tools::setBits(uint64_t source, int32_t low, int32_t high)
   {
     return source;
   }
+  // Mask of all 1's
   uint64_t mask = ~0;
-  mask = mask << (63-high);
-  mask = mask >> (low + (63-high));
+  // Shift out high order bits (to get 0's)
+  mask = mask << (63 - high);
+  // Shift out low order bits (to get 0's)
+  mask = mask >> (low + (63 - high));
+  // Shift mask back to destination needed for setting bits.
   mask = mask << low;
+  // Return new number with bits set
   return mask | source;
 }
 
@@ -184,11 +192,15 @@ uint64_t Tools::clearBits(uint64_t source, int32_t low, int32_t high)
   {
     return source;
   }
+  // Mask of all 1's
   uint64_t mask = ~0;
+  // Move 1's to area that needs to be cleared
   mask = mask << (63-high);
   mask = mask >> (low + (63-high));
   mask = mask << low;
+  // Change 1's to 0's and 0's to 1's
   mask = ~mask;
+  // And to clear the bits in specified area
   return mask & source;
 }
 
@@ -220,6 +232,7 @@ uint64_t Tools::clearBits(uint64_t source, int32_t low, int32_t high)
 uint64_t Tools::copyBits(uint64_t source, uint64_t dest, 
                          int32_t srclow, int32_t dstlow, int32_t length)
 {
+  // Calculate source and destination high's
   int32_t srchigh = srclow + length - 1;
   int32_t dsthigh = dstlow + length - 1;
   // If to check low and high
@@ -261,9 +274,15 @@ uint64_t Tools::copyBits(uint64_t source, uint64_t dest,
  */
 uint64_t Tools::setByte(uint64_t source, int32_t byteNum)
 {
-  int32_t low = byteNum * 8;
-  int32_t high = (byteNum * 8) + 7;
-  return setBits(source, low, high);
+
+  // Not sure if I can use the following code because there is an if statement inside of the setBits function
+  // Obtain low order bit
+  // int32_t low = byteNum * 8;
+  // Obtain high order bit
+  // int32_t high = (byteNum * 8) + 7;
+  // Use setBits
+  // return setBits(source, low, high);
+  return 0;
 }
 
 
@@ -285,6 +304,7 @@ uint64_t Tools::setByte(uint64_t source, int32_t byteNum)
  */
 uint64_t Tools::sign(uint64_t source)
 {
+  // Shift bits to obtain sign number
   uint64_t sign = source >> 63;
   return sign;
 }
