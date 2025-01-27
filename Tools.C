@@ -222,11 +222,21 @@ uint64_t Tools::copyBits(uint64_t source, uint64_t dest,
 {
   int32_t srchigh = srclow + length - 1;
   int32_t dsthigh = dstlow + length - 1;
+  // If to check low and high
   if (srclow < 0 || dstlow < 0 || srchigh > 63 || dsthigh > 63)
   {
     return dest;
   }
-  return source; // temporary
+  // Can use clearBits function because the if only checks low and high values.
+  // Get bits needed to copy
+  uint64_t copyNum = getBits(source, srclow, srchigh);
+  // Move bits to where they need to be for the destination
+  copyNum = copyNum << dstlow;
+  // Clear bits in destination where we insert the copy
+  dest = clearBits(dest, dstlow, dsthigh);
+  // Add copy bits to the destination
+  dest = dest | copyNum;
+  return dest;
 }
 
 
