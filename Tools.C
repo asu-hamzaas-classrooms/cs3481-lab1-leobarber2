@@ -43,7 +43,7 @@
 */
 uint64_t Tools::buildLong(uint8_t bytes[LONGSIZE])
 {
-  uint64_t long_num = 0x0000000000000000;
+  uint64_t long_num = 0x0000000000000000ull;
   for (int i = LONGSIZE - 1; i > -1; i--)
   {
     // The first shift will not do anything.
@@ -195,8 +195,8 @@ uint64_t Tools::clearBits(uint64_t source, int32_t low, int32_t high)
   // Mask of all 1's
   uint64_t mask = ~0;
   // Move 1's to area that needs to be cleared
-  mask = mask << (63-high);
-  mask = mask >> (low + (63-high));
+  mask = mask << (63 - high);
+  mask = mask >> (low + (63 - high));
   mask = mask << low;
   // Change 1's to 0's and 0's to 1's
   mask = ~mask;
