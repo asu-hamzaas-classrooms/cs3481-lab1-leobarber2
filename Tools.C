@@ -179,8 +179,6 @@ uint64_t Tools::setBits(uint64_t source, int32_t low, int32_t high)
  */
 uint64_t Tools::clearBits(uint64_t source, int32_t low, int32_t high)
 {
-  
-  
   return 0;
 }
 
@@ -240,7 +238,9 @@ uint64_t Tools::copyBits(uint64_t source, uint64_t dest,
  */
 uint64_t Tools::setByte(uint64_t source, int32_t byteNum)
 {
-  return 0;
+  int32_t low = byteNum * 8;
+  int32_t high = (byteNum * 8) + 7;
+  return setBits(source, low, high);
 }
 
 
