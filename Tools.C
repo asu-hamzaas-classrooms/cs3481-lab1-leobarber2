@@ -225,7 +225,7 @@ uint64_t Tools::copyBits(uint64_t source, uint64_t dest,
   {
     return dest;
   }
-  
+  return source; // temporary
 }
 
 
@@ -274,8 +274,8 @@ uint64_t Tools::setByte(uint64_t source, int32_t byteNum)
  */
 uint64_t Tools::sign(uint64_t source)
 {
-  source = source >> 63;
-  return source;
+  uint64_t sign = source >> 63;
+  return sign;
 }
 
 /**
