@@ -78,11 +78,11 @@ uint64_t Tools::getByte(uint64_t source, int32_t byteNum)
     return 0;
   }
   //uint8_t new_num = source >> (byteNum * 8);
-
-  source = source >> (byteNum * 8);
-  source = source & 0x00000000000000ff;
+  uint64_t newNum = source;
+  newNum = newNum >> (byteNum * 8);
+  newNum = newNum & 0x00000000000000ff;
   
-  return source;
+  return newNum;
 }
 
 /**
