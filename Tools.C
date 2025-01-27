@@ -282,8 +282,28 @@ uint64_t Tools::setByte(uint64_t source, int32_t byteNum)
   // int32_t high = (byteNum * 8) + 7;
   // Use setBits
   // return setBits(source, low, high);
-  return 0;
-}
+  // Another way to make the mask might be:
+  // uint64_t mask = 0xff;
+  // mask = << (byteNum * 8);
+  // The rest of the bits should be 0 minus the one byteNum section
+
+  int32_t low = byteNum * 8;
+  int32_t high = (byteNum * 8) + 7;
+
+  // Mask of all 1's
+  uint64_t mask = ~0;
+  // Shift out high order bits (to get 0's)
+  mask = mask << (63 - high);
+  // Shift out low order bits (to get 0's)
+  mask = mask >> (low + (63 - high));
+  // Shift mask back to destination needed for setting bits.
+  mask = mask << low;
+  // Check for validity. Multiply mask by 0 if numbers out of range, by 1 if not.
+  mask = mask * !(byteNum < 0 || byteNum > 7);
+  // Set bits to 1 in specified byteNum range.
+  uint64_t newNum = mask | source;
+  return newNum;
+  }
 
 
 /**
